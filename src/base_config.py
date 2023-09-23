@@ -25,8 +25,8 @@ class Config:
                                        sam.prompt_encoder)
 
         # Dataset and Dataloader
-        IMG_PATH = "/kaggle/input/polypdataset/data/TrainDataset/image/*"
-        MASK_PATH = "/kaggle/input/polypdataset/data/TrainDataset/mask/*"
+        IMG_PATH = "/kaggle/input/polypdataset/data/TrainDataset/images/*"
+        MASK_PATH = "/kaggle/input/polypdataset/data/TrainDataset/masks/*"
         self.USE_BOX_PROMPT = False
         USE_CENTER_POINT = True
         self.IMAGE_SIZE = 1024
