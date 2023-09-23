@@ -15,7 +15,7 @@ from src.datasets import PromptPolypDataset
 class Config:
     def __init__(self):
         # Model init
-        PRETRAINED_PATH = "ckpts/sam_vit_b_01ec64.pth"
+        PRETRAINED_PATH = "/kaggle/input/polypdataset/data/sam_vit_b_01ec64.pth"
         MODEL_SIZE = "vit_b"
 
         # Model
@@ -25,8 +25,8 @@ class Config:
                                        sam.prompt_encoder)
 
         # Dataset and Dataloader
-        IMG_PATH = "/home/nguyen.mai/Workplace/sun-polyp/Dataset/TrainDataset/image/*"
-        MASK_PATH = "/home/nguyen.mai/Workplace/sun-polyp/Dataset/TrainDataset/mask/*"
+        IMG_PATH = "/kaggle/input/polypdataset/data/TrainDataset/image/*"
+        MASK_PATH = "/kaggle/input/polypdataset/data/TrainDataset/mask/*"
         self.USE_BOX_PROMPT = False
         USE_CENTER_POINT = True
         self.IMAGE_SIZE = 1024
@@ -72,6 +72,6 @@ class Config:
         self.RATE = 0.5
 
         # Save
-        self.SAVE_PATH = "workdir/train/"
+        self.SAVE_PATH = "/kaggle/working/"
         self.EPOCH_TO_SAVE = 100
         self.SAVE_FREQUENCY = 10
