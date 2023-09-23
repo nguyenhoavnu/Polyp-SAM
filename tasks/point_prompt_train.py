@@ -2,6 +2,8 @@ import argparse
 import os
 import time
 import datetime
+import torch
+from segmentation_models_pytorch.losses import DiceLoss, FocalLoss
 import pandas as pd
 import importlib  # for import module
 import shutil  # for copy files
@@ -28,6 +30,18 @@ def parse_args():
 
     return args
 
+
+class MLoss(torch.nn.Module):
+    def __init__(self):
+        super(MLoss, self).__init__()
+
+        self.dice_loss = DiceLoss(mode="binary", from_logits=True)
+
+    def forward(self, pred_point, center_point, pred_mask, mask):
+        return self.euclidean_distance(pred_point, center_point) + self.dice_loss(pred_mask, mask)
+    
+    def euclidean_distance(self, pred_point, center_point):
+        return torch.sqrt(torch.sum((pred_point - center_point) ** 2, dim=1)).mean()
 
 def main():
     args = parse_args()
@@ -62,7 +76,8 @@ def main():
     )
 
     # Loss
-    loss_fn = config.LOSS_FN
+    # loss_fn = config.LOSS_FN
+    loss_fn = MLoss()
 
     # Optimizer
     optimizer = config.OPTIMIZER(model.parameters(), **config.OPTIMIZER_KWARGS)
@@ -86,6 +101,7 @@ def main():
                     image_embedding = None
                 image = batch['image']
                 mask = batch['mask']
+                points = batch['points']
 
                 _input = {
                     'image_embedding': image_embedding,
@@ -93,9 +109,9 @@ def main():
                     'image_size': (config.IMAGE_SIZE, config.IMAGE_SIZE)
                 }
 
-                pred = model(_input)
+                pred_mask, pred_point = model(_input)
 
-                loss = loss_fn(pred, mask)
+                loss = loss_fn(pred_point, points, pred_mask, mask)
 
                 accelerator.backward(loss)
 

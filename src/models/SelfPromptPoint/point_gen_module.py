@@ -68,10 +68,8 @@ class PointGenModule(nn.Module):
 class PointGenModulev2(nn.Module):
     def __init__(self,
                  image_size: int = 1024,
-                 num_points: int = 2):
+                 num_points: int = 1):
         super(PointGenModulev2, self).__init__()
-        # Input: (batch_size, 256, 64, 64)
-        # Output: (batch_size, num_points, 2)
         self.image_size = image_size
         self.num_points = num_points
 

@@ -31,7 +31,7 @@ class SelfPointPromptSAM(nn.Module):
 
         num_points = self.point_model.num_points
         self.register_buffer('labels', torch.ones((1, num_points), dtype=torch.long), False)
-        self.labels[0, num_points // 2:] = 0
+        # self.labels[0, num_points // 2:] = 0
 
         self.register_buffer('pixel_mean', torch.tensor(pixel_mean).view(-1, 1, 1), False)
         self.register_buffer('pixel_std', torch.tensor(pixel_std).view(-1, 1, 1), False)
@@ -88,7 +88,7 @@ class SelfPointPromptSAM(nn.Module):
             original_size=input.get("image_size"),
         )
 
-        return mask
+        return mask, points
 
     def postprocess_masks(
             self,
@@ -175,4 +175,4 @@ class SelfPointPromptSAMv2(SelfPointPromptSAM):
             original_size=input.get("image_size"),
         )
 
-        return mask
+        return mask, points

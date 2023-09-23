@@ -6,7 +6,7 @@ from segmentation_models_pytorch.losses import DiceLoss, FocalLoss
 from segment_anything.modeling import Sam
 from segment_anything import sam_model_registry
 
-from src.models.SelfPromptPoint import SelfPointPromptSAM, PointGenModule
+from src.models.SelfPromptPoint import SelfPointPromptSAMv2, PointGenModulev2
 from src.scheduler import LinearWarmupCosineAnnealingLR
 from src.losses import CombinedLoss
 from src.datasets.polyp.polyp_dataset import PolypDataset
@@ -20,8 +20,8 @@ class Config:
 
         # Model
         sam: Sam = sam_model_registry[MODEL_SIZE](PRETRAINED_PATH)
-        point_gen = PointGenModule()
-        self.model = SelfPointPromptSAM(point_gen,
+        point_gen = PointGenModulev2()
+        self.model = SelfPointPromptSAMv2(point_gen,
                                         sam.image_encoder,
                                         sam.mask_decoder,
                                         sam.prompt_encoder,
@@ -68,4 +68,4 @@ class Config:
         )
 
         # Save
-        self.SAVE_PATH = "workdir/train/Self-Prompt-Point"
+        self.SAVE_PATH = "/kaggle/working/train/Self-Prompt-Point"
